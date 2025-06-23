@@ -43,6 +43,7 @@ ALLOWED_HOSTS = []
 
 
 # INTERNAL_IPS = ["127.0.0.1"]
+# ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 INSTALLED_APPS = [
     # Django default apps
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',  # required for allauth
     'tailwind',
     "theme", 
+    'widget_tweaks',
     # 'django_browser_reload', 
     # Allauth
     'allauth',
@@ -165,8 +167,9 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+# ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False

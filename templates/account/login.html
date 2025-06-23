@@ -1,10 +1,5 @@
-
-
-
-
-
 {% load socialaccount %}
-
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +13,24 @@
 
         <form method="post" action="{% url 'account_login' %}" class="space-y-4">
             {% csrf_token %}
-            {{ form.as_p }}
+            
+            <div class="mb-4">
+                <label for="{{ form.login.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                    Email
+                </label>
+                {{ form.login|add_class:"w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300" }}
+                {{ form.login.errors }}
+            </div>
+
+            <div class="mb-4">
+                <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                    Password
+                </label>
+                {{ form.password|add_class:"w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300" }}
+                {{ form.password.errors }}
+            </div>
+
+
             <button type="submit" class="w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
                 Login
             </button>
