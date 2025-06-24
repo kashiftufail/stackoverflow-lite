@@ -57,8 +57,11 @@ INSTALLED_APPS = [
     'tailwind',
     "theme", 
     'widget_tweaks',
+    'taggit',
+    'django_select2',
     # 'django_browser_reload', 
     # Allauth
+    'questions',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

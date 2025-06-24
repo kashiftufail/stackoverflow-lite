@@ -24,5 +24,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),  # 👈 This must be here!
     path('', home, name='home'),  # this maps `/` to home view
     # path("__reload__/", include("django_browser_reload.urls")),
+    path('questions/', include('questions.urls')),  # ✅ Added this
     
 ]
