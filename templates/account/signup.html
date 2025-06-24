@@ -1,6 +1,41 @@
-<h2>Sign Up</h2>
-<form method="post" action="{% url 'account_signup' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md p-8 bg-white rounded shadow">
+        <h2 class="mb-6 text-2xl font-bold text-center text-gray-800">Create an Account</h2>
+
+        <form method="post" action="{% url 'account_signup' %}" class="space-y-4">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-4">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ field.label }}
+                    </label>
+                    {{ field|add_class:"w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300" }}
+                    {% if field.errors %}
+                        <p class="text-sm text-red-600 mt-1">{{ field.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+                Sign Up
+            </button>
+        </form>
+
+        <div class="mt-4 text-center">
+            <span class="text-sm text-gray-600">Already have an account?</span>
+            <a href="{% url 'account_login' %}" class="text-sm text-blue-500 hover:underline ml-1">
+                Login
+            </a>
+        </div>
+    </div>
+</body>
+</html>

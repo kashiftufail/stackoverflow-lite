@@ -84,6 +84,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'stacklite.urls'
 
+ACCOUNT_FORMS = {
+    'signup': 'core.forms.CustomSignupForm',
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
