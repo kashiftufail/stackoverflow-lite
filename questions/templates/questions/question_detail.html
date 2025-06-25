@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% load voting_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto my-10 px-4">
+
+  <!-- QUESTION SECTION -->
+  <div class="flex gap-6 mb-10">
+    
+    <!-- Voting Panel -->
+    <div class="flex flex-col items-center text-gray-500">
+      <form method="post" action="{% url 'vote' question.pk 'question' %}">
+        {% csrf_token %}
+        <input type="hidden" name="direction" value="up">
+        <button type="submit" class="hover:text-green-600 text-xl">▲</button>
+      </form>
+
+      <div class="text-lg font-bold">{{ vote_score.score }}</div>
+
+      <form method="post" action="{% url 'vote' question.pk 'question' %}">
+        {% csrf_token %}
+        <input type="hidden" name="direction" value="down">
+        <button type="submit" class="hover:text-red-600 text-xl">▼</button>
+      </form>
+    </div>
+
+    <!-- Question Body -->
+    <div class="flex-1">
+      <h1 class="text-2xl font-semibold mb-2">{{ question.title }}</h1>
+      <p class="text-gray-800 whitespace-pre-line mb-4">{{ question.detail }}</p>
+      
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        {% for tag in question.tags.all %}
+          <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">{{ tag.name }}</span>
+        {% endfor %}
+      </div>
+
+      <!-- Author -->
+      <div class="text-sm text-gray-500">
+        Asked by <strong>{{ question.user.username }}</strong> on {{ question.created_at|date:"M d, Y" }}
+      </div>
+    </div>
+  </div>
+
+  <!-- ANSWERS SECTION -->
+  <div class="space-y-8">
+    <h2 class="text-xl font-bold mb-2">{{ question.answers.count }} Answer{{ question.answers.count|pluralize }}</h2>
+
+    {% for answer in question.answers.all %}
+    <div class="flex gap-6 bg-white border rounded p-4">
+      <!-- Answer Vote -->
+      <div class="flex flex-col items-center text-gray-500">
+        <form method="post" action="{% url 'vote' answer.pk 'answer' %}">
+          {% csrf_token %}
+          <input type="hidden" name="direction" value="up">
+          <button type="submit" class="hover:text-green-600 text-xl">▲</button>
+        </form>
+
+        <div class="text-lg font-bold">
+          {% score_for_object answer as answer_score %}
+
+          {{ answer_score.score }}
+        </div>
+
+        <form method="post" action="{% url 'vote' answer.pk 'answer' %}">
+          {% csrf_token %}
+          <input type="hidden" name="direction" value="down">
+          <button type="submit" class="hover:text-red-600 text-xl">▼</button>
+        </form>
+      </div>
+
+      <!-- Answer Detail -->
+      <div class="flex-1">
+        <p class="text-gray-800 whitespace-pre-line">{{ answer.detail }}</p>
+        <div class="text-sm text-gray-500 mt-2">
+          Answered by <strong>{{ answer.user.username }}</strong> on {{ answer.created_at|date:"M d, Y" }}
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-gray-500">No answers yet.</p>
+    {% endfor %}
+  </div>
+
+  <!-- ADD ANSWER FORM -->
+  {% if user.is_authenticated %}
+  <div class="mt-10">
+    <h2 class="text-lg font-semibold mb-2">Your Answer</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_answer">
+      <textarea name="detail" rows="6" class="w-full border p-2 rounded mb-4" required></textarea>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Submit Answer</button>
+    </form>
+  </div>
+  {% else %}
+  <div class="mt-10 text-gray-600">
+    <a href="{% url 'account_login' %}" class="text-blue-600 hover:underline">Login</a> to submit an answer.
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
