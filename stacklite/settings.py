@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'taggit',
     'django_select2',
+    "voting",
+    'django.contrib.humanize',
     # 'django_browser_reload', 
     # Allauth
     'questions',

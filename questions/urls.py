@@ -7,4 +7,6 @@ urlpatterns = [
     path('<int:pk>/', views.question_detail, name='question_detail'),
     path('<int:pk>/edit/', views.question_edit, name='question_edit'),
     path('<int:pk>/delete/', views.question_delete, name='question_delete'),
+    path("<int:pk>/vote/<str:target>/", views.vote, name="vote"),
+    
 ]
