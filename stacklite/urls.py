@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from core.views import home  # 👈 import your view
+from questions.views import TagAutocompleteView
+
 
 
 urlpatterns = [
@@ -24,6 +26,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),  # 👈 This must be here!
     path('', home, name='home'),  # this maps `/` to home view
     # path("__reload__/", include("django_browser_reload.urls")),
+    # path('select2/', include('django_select2.urls')),  # required
     path('questions/', include('questions.urls')),  # ✅ Added this
-    
+    path("autocomplete/tags/", TagAutocompleteView.as_view(), name="tag-autocomplete"),
+    path('select2/', include('django_select2.urls')),  # required
 ]

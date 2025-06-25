@@ -1,0 +1,62 @@
+<!-- File: questions/templates/questions/question_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 md:px-0 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+    <!-- Left Sidebar -->
+    <aside class="hidden md:block md:col-span-2 space-y-4">
+        <div class="bg-white rounded-lg shadow p-4">
+            <a href="#" class="block text-blue-600 font-semibold hover:underline">Tags</a>
+            <a href="#" class="block text-blue-600 font-semibold hover:underline mt-2">Users</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:col-span-8">
+        <h1 class="text-xl font-bold mb-4">Questions</h1>
+        {% for question in page_obj %}
+            <div class="bg-white rounded-lg shadow p-4 mb-6">
+                <a href="{% url 'question_detail' question.pk %}" class="text-lg font-semibold text-blue-700 hover:underline">{{ question.title }}</a>
+                <p class="text-gray-700 mt-2">{{ question.detail|truncatewords:30 }}</p>
+                <div class="flex flex-wrap items-center mt-4 gap-2">
+                    {% for tag in question.tags.all %}
+                        <span class="bg-gray-200 text-gray-800 px-2 py-1 rounded text-xs">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                <p class="mt-3 text-sm text-gray-500">Posted by {{ question.user.email }}</p>
+            </div>
+        {% empty %}
+            <p>No questions found.</p>
+        {% endfor %}
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            <div class="flex justify-center space-x-2">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                {% endif %}
+                <span class="px-3 py-1 bg-gray-100 rounded">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="hidden md:block md:col-span-2 space-y-4">
+        <div class="bg-white rounded-lg shadow p-4">
+            <h2 class="text-sm font-bold mb-2">Related Tags</h2>
+            {% for tag in related_tags %}
+                <span class="block text-blue-600 text-sm hover:underline">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+            <h2 class="text-sm font-bold mb-2">Other Tags</h2>
+            {% for tag in other_tags %}
+                <span class="block text-gray-600 text-sm hover:underline">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+    </aside>
+</div>
+{% endblock %}
