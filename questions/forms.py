@@ -21,3 +21,25 @@ class QuestionForm(forms.ModelForm):
                 }
             ),
         }
+
+    def clean_tags(self):
+        """
+        Clean and split incoming tags. Handles:
+        - Raw list (from Select2)
+        - Stringified list (Select2 may send: '["a", "b"]')
+        - Quoted tags like "'oracle'" or "['foo']"
+        """
+        tags = self.cleaned_data["tags"]
+
+        # Handle single comma-separated string
+        if isinstance(tags, str):
+            tags = tags.split(",")
+
+        cleaned = []
+        for tag in tags:
+            tag = tag.strip().strip("[]'\"")  # remove quotes, brackets, spaces
+            if tag:
+                cleaned.append(tag)
+        print("Cleaned tags:", cleaned)
+        return cleaned
+    
